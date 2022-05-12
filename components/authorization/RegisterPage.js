@@ -1,50 +1,53 @@
 import { SafeAreaView, TextInput, View, Text, StyleSheet, TouchableOpacity} from "react-native"
-import {PrimaryButton} from '../buttons/Buttons'
-import { Ionicons } from '@expo/vector-icons'; 
+import { Ionicons } from '@expo/vector-icons';
+import { PrimaryButton } from "../buttons/Buttons";
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 
 export const RegisterPage = ({navigation}) => {
     return(
         <SafeAreaView style={css.container}>
-            <View style={css.header}>
-                <TouchableOpacity style={css.headeback} onPress={() => navigation.goBack()}>
-                    <Ionicons name="chevron-back-sharp" size={24} color="#fff" />
-                </TouchableOpacity>
-                <Text style={css.headertext}>Sign Up</Text>
-            </View>
-            <View style={css.wrapper}>
-                <View style={css.inputcontainer}>
-                    <Text style={css.inputtext}>Name</Text>
-                    <View style={css.inputwrapper}>
-                        <TextInput style={css.input} placeholder='John Doe' placeholderTextColor={'rgba(255,255,255, .5)'}/>
-                    </View>
-                </View>
-                <View style={css.inputcontainer}>
-                    <Text style={css.inputtext}>Email</Text>
-                    <View style={css.inputwrapper}>
-                        <TextInput style={css.input} placeholder='mail@example.com' placeholderTextColor={'rgba(255,255,255, .5)'}/>
-                    </View>
-                </View>
-                <View style={css.inputcontainer_last}>
-                    <Text style={css.inputtext}>Password</Text>
-                    <View style={css.inputwrapper}>
-                        <TextInput style={css.input} placeholder='Pick a strong password' placeholderTextColor={'rgba(255,255,255, .5)'}/>
-                    </View>
-                </View>
-                <View style={css.inputcontainer_last}>
-                    <Text style={css.inputtext}>Password again</Text>
-                    <View style={css.inputwrapper}>
-                        <TextInput style={css.input} placeholder='Repeat password' placeholderTextColor={'rgba(255,255,255, .5)'}/>
-                    </View>
-                </View>
-                <PrimaryButton caption={'Create Account'}/>
-                <View style={css.infocontainer}>
-                    <Text style={css.infotext}>Already have an account?</Text>
-                    <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-                        <Text style={css.infotext_2}>Log In</Text>
+            <KeyboardAwareScrollView style={{flex: 1}}>
+                <View style={css.header}>
+                    <TouchableOpacity style={css.headeback} onPress={() => navigation.goBack()}>
+                        <Ionicons name="chevron-back-sharp" size={24} color="#fff" />
                     </TouchableOpacity>
+                    <Text style={css.headertext}>Sign Up</Text>
                 </View>
-            </View>
+                <View style={css.wrapper}>
+                    <View style={css.inputcontainer}>
+                        <Text style={css.inputtext}>Name</Text>
+                        <View style={css.inputwrapper}>
+                            <TextInput style={css.input} placeholder='John Doe' placeholderTextColor={'rgba(255,255,255, .5)'}/>
+                        </View>
+                    </View>
+                    <View style={css.inputcontainer}>
+                        <Text style={css.inputtext}>Email</Text>
+                        <View style={css.inputwrapper}>
+                            <TextInput style={css.input} placeholder='mail@example.com' placeholderTextColor={'rgba(255,255,255, .5)'}/>
+                        </View>
+                    </View>
+                    <View style={css.inputcontainer_last}>
+                        <Text style={css.inputtext}>Password</Text>
+                        <View style={css.inputwrapper}>
+                            <TextInput style={css.input} placeholder='Pick a strong password' placeholderTextColor={'rgba(255,255,255, .5)'}/>
+                        </View>
+                    </View>
+                    <View style={css.inputcontainer_last}>
+                        <Text style={css.inputtext}>Password again</Text>
+                        <View style={css.inputwrapper}>
+                            <TextInput style={css.input} placeholder='Repeat password' placeholderTextColor={'rgba(255,255,255, .5)'}/>
+                        </View>
+                    </View>
+                    <PrimaryButton caption={'Create Account'}/>
+                    <View style={css.infocontainer}>
+                        <Text style={css.infotext}>Already have an account?</Text>
+                        <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+                            <Text style={css.infotext_2}>Log In</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </KeyboardAwareScrollView>
         </SafeAreaView>
     )
 }
@@ -69,7 +72,9 @@ const css = StyleSheet.create({
         alignSelf: 'center',
         flexDirection: 'row',
         alignItems: 'center',
-        flex: .1
+        flex: .1,
+        marginBottom: 40,
+        marginTop: 20
     },
 
     headertext: {
@@ -125,7 +130,7 @@ const css = StyleSheet.create({
 
     infocontainer: {
         flexDirection: 'row',
-        marginTop: 10,
+        marginTop: 5,
     },
 
     infotext: {

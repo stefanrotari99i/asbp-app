@@ -1,10 +1,16 @@
 import { TouchableOpacity, StyleSheet, Text } from "react-native"
-
+import { AntDesign } from '@expo/vector-icons'; 
+import { LinearGradient } from 'expo-linear-gradient';
 
 export const PrimaryButton = ({caption, action}) => {
     return(
         <TouchableOpacity style={css.primarybtn} onPress={action} >
-            <Text style={css.btntext}>{caption}</Text>
+            <LinearGradient
+                colors={['#FFC300', '#FEB241']}
+                style={css.gradient}
+            >
+                <Text style={css.btntext}>{caption}</Text>
+            </LinearGradient>
         </TouchableOpacity>
     )
 }
@@ -17,14 +23,35 @@ export const OutlineButton = ({caption, action}) => {
     )
 }
 
+export const AppleButton = ({caption, action}) => {
+    return(
+        <TouchableOpacity style={css.socialbtn} onPress={action} >
+            <AntDesign name="apple1" size={24} color="#fff" style={css.socialicon}/>
+            <Text style={css.btntext_2}>{caption}</Text>
+        </TouchableOpacity> 
+    )
+}
+
+export const GoogleButton = ({caption, action}) => {
+    return(
+        <TouchableOpacity style={css.socialbtn} onPress={action} >
+            <AntDesign name="google" size={24} color="#dd4b39" style={css.socialicon}/>
+            <Text style={css.btntext_2}>{caption}</Text>
+        </TouchableOpacity> 
+    )
+}
+
 const css = StyleSheet.create({
     primarybtn: {
-        backgroundColor: '#feb241',
+        // backgroundColor: '#feb241',
         width: '90%',
+        marginBottom: 20
+    },
+
+    gradient: {
         paddingVertical: 17,
         borderRadius: 10,
-        alignItems: 'center',
-        marginBottom: 18
+        alignItems: 'center', 
     },
 
     btntext: {
@@ -40,7 +67,24 @@ const css = StyleSheet.create({
         paddingVertical: 17,
         borderRadius: 10,
         alignItems: 'center',
-        marginBottom: 18
+        marginBottom: 10
+    },
+
+    socialbtn: {
+        borderWidth: .2,
+        borderColor: 'rgba(255,255,255, .2)',
+        width: '90%',
+        paddingVertical: 17,
+        borderRadius: 10,
+        alignItems: 'center',
+        marginBottom: 18,
+
+    },
+
+    socialicon: {
+        position: 'absolute',
+        left: 20,
+        top: '75%'
     },
 
     btntext_2: {

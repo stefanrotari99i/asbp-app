@@ -1,39 +1,51 @@
 import { SafeAreaView, TextInput, View, Text, StyleSheet, TouchableOpacity} from "react-native"
-import {PrimaryButton} from '../buttons/Buttons'
+import {AppleButton, GoogleButton, PrimaryButton} from '../buttons/Buttons'
 import { Ionicons } from '@expo/vector-icons'; 
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+
 
 
 export const LoginPage = ({navigation}) => {
     return(
         <SafeAreaView style={css.container}>
-            <View style={css.header}>
-                <TouchableOpacity style={css.headeback} onPress={() => navigation.goBack()}>
-                    <Ionicons name="chevron-back-sharp" size={24} color="#fff" />
-                </TouchableOpacity>
-                <Text style={css.headertext}>Log In</Text>
-            </View>
-            <View style={css.wrapper}>
-                <View style={css.inputcontainer}>
-                    <Text style={css.inputtext}>Email</Text>
-                    <View style={css.inputwrapper} >
-                        <TextInput style={css.input} placeholder='mail@example.com' placeholderTextColor={'rgba(255,255,255, .5)'}/>
-                    </View>
-                </View>
-                <View style={css.inputcontainer_last}>
-                    <Text style={css.inputtext}>Password</Text>
-                    <View style={css.inputwrapper}>
-                        <TextInput style={css.input}  placeholder='************' placeholderTextColor={'rgba(255,255,255, .5)'}/>
-                    </View>
-                </View>
-                <PrimaryButton caption={'Log In'}/>
-                <View style={css.infocontainer}>
-                    <Text style={css.infotext}>Don't have an account?</Text>
-                    <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-                        <Text style={css.infotext_2}>Sign Up</Text>
+            <KeyboardAwareScrollView style={{flex: 1}}>
+                <View style={css.header}>
+                    <TouchableOpacity style={css.headeback} onPress={() => navigation.goBack()}>
+                        <Ionicons name="chevron-back-sharp" size={24} color="#fff" />
                     </TouchableOpacity>
+                    <Text style={css.headertext}>Log In</Text>
                 </View>
-            </View>
+                <View style={css.wrapper}>
+                    <AppleButton caption={'Continue with Apple'}/>
+                    <GoogleButton caption={'Continue with Google'} />
+                    <View style={css.separator}>
+                        <View style={css.separatorline}></View>
+                        <Text style={css.separatortext}>OR</Text>
+                    </View>
+                    {/* <Text style={css.inavlidcredit}>Invalid credentials! Please check your email and password and try again.</Text> */}
+                    <View style={css.inputcontainer}>
+                        <Text style={css.inputtext}>Email</Text>
+                        <View style={css.inputwrapper} >
+                            <TextInput style={css.input} placeholder='mail@example.com' placeholderTextColor={'rgba(255,255,255, .5)'}/>
+                        </View>
+                    </View>
+                    <View style={css.inputcontainer_last}>
+                        <Text style={css.inputtext}>Password</Text>
+                        <View style={css.inputwrapper}>
+                            <TextInput style={css.input}  placeholder='************' placeholderTextColor={'rgba(255,255,255, .5)'} secureTextEntry={true}/>
+                        </View>
+                    </View>
+                    <PrimaryButton caption={'Log In'}/>
+                    <View style={css.infocontainer}>
+                        <Text style={css.infotext}>Don't have an account?</Text>
+                        <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+                            <Text style={css.infotext_2}>Sign Up</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </KeyboardAwareScrollView>
         </SafeAreaView>
+
     )
 }
 
@@ -47,7 +59,7 @@ const css = StyleSheet.create({
     },
     
     wrapper: {
-        flex: .8,
+        flex: .85,
         alignItems: 'center',
 
     },
@@ -57,7 +69,9 @@ const css = StyleSheet.create({
         alignSelf: 'center',
         flexDirection: 'row',
         alignItems: 'center',
-        flex: .1
+        flex: .1,
+        marginBottom: 40,
+        marginTop: 20
     },
 
     headertext: {
@@ -113,7 +127,7 @@ const css = StyleSheet.create({
 
     infocontainer: {
         flexDirection: 'row',
-        marginTop: 10,
+        marginTop: 5,
     },
 
     infotext: {
@@ -127,6 +141,36 @@ const css = StyleSheet.create({
         fontSize: 15,
         fontWeight: '700',
         marginLeft: 10,
+    },
+
+    separator: {
+        width: '90%',
+        marginTop: 20,
+        marginBottom: 30
+    },
+
+    separatortext: {
+        color: 'rgba(255,255,255, .4)',
+        fontWeight: '600',
+        position: 'absolute',
+        backgroundColor: '#121212',
+        left: '45%',
+        top: -18,
+        padding: 10,
+        borderRadius: 50
+    },
+
+    separatorline: {
+        width: '100%',
+        height: 1,
+        backgroundColor: 'rgba(255,255,255, .06)',
+    },
+
+    inavlidcredit: {
+        color: 'crimson',
+        fontWeight: '600',
+        textAlign: 'center',
+        marginBottom: 25,
     }
 
 })
