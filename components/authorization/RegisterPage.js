@@ -31,6 +31,12 @@ export const RegisterPage = ({navigation}) => {
                         <TextInput style={css.input} placeholder='Pick a strong password' placeholderTextColor={'rgba(255,255,255, .5)'}/>
                     </View>
                 </View>
+                <View style={css.inputcontainer_last}>
+                    <Text style={css.inputtext}>Password again</Text>
+                    <View style={css.inputwrapper}>
+                        <TextInput style={css.input} placeholder='Repeat password' placeholderTextColor={'rgba(255,255,255, .5)'}/>
+                    </View>
+                </View>
                 <PrimaryButton caption={'Create Account'}/>
                 <View style={css.infocontainer}>
                     <Text style={css.infotext}>Already have an account?</Text>
@@ -53,7 +59,7 @@ const css = StyleSheet.create({
     },
     
     wrapper: {
-        flex: .8,
+        flex: .83,
         alignItems: 'center',
 
     },
