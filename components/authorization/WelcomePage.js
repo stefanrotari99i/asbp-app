@@ -13,8 +13,9 @@ export const WelcomePage = ({navigation}) => {
             />
             <SafeAreaView style={css.wrapper}>
                 <View style={css.container}>
-                    <Text style={css.maintext}>Make your day unforgettable</Text>
-                    <PrimaryButton caption={'Log In'} action={() => navigation.navigate('Login')}/>
+                    <Text style={css.maintext}>Drinkmate</Text>
+                    <Text style={css.subtitle}>Make your day unforgettable</Text>
+                    <PrimaryButton caption={'Get started'} action={() => navigation.navigate('Login')}/>
                     <OutlineButton caption={'Register'} action={() => navigation.navigate('Register')}/>
                 </View>
             </SafeAreaView>
@@ -29,23 +30,34 @@ const css = StyleSheet.create({
         flex: 1,
         position: 'absolute',
         width: '100%',
-        height: '100%'
+        height: '100%',
+        alignItems: 'center'
     },
 
     maintext: {
         color: '#fff',
-        fontSize: 32,
+        fontSize: 52,
         maxWidth: 400,
         textAlign: 'center',
-        marginBottom: 80,
+        marginBottom: 5,
         fontWeight: '700'
+    },
+
+    subtitle: {
+        color: '#fff',
+        fontSize: 16,
+        maxWidth: 300,
+        textAlign: 'center',
+        marginBottom: 80,
+        fontWeight: '600'
     },
 
     container: {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'flex-end',
-        paddingBottom: 50
+        paddingBottom: 50,
+        width: '90%'
     },
 
     imageBg: {

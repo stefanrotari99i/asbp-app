@@ -43,8 +43,7 @@ export const GoogleButton = ({caption, action}) => {
 
 const css = StyleSheet.create({
     primarybtn: {
-        // backgroundColor: '#feb241',
-        width: '90%',
+        width: '100%',
         marginBottom: 20
     },
 
@@ -63,7 +62,7 @@ const css = StyleSheet.create({
     outlinebtn: {
         borderWidth: 1,
         borderColor: '#FFF',
-        width: '90%',
+        width: '100%',
         paddingVertical: 17,
         borderRadius: 10,
         alignItems: 'center',
@@ -73,7 +72,7 @@ const css = StyleSheet.create({
     socialbtn: {
         borderWidth: .2,
         borderColor: 'rgba(255,255,255, .2)',
-        width: '90%',
+        width: '100%',
         paddingVertical: 17,
         borderRadius: 10,
         alignItems: 'center',

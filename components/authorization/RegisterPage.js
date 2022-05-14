@@ -1,42 +1,44 @@
 import { SafeAreaView, TextInput, View, Text, StyleSheet, TouchableOpacity} from "react-native"
+import React, {useRef, useState} from 'react'
 import { Ionicons } from '@expo/vector-icons';
 import { PrimaryButton } from "../buttons/Buttons";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-
+import { PrimaryHeader } from "../Headers";
 
 export const RegisterPage = ({navigation}) => {
+    const mailRef = useRef();
+    const passRef = useRef();
+    const passrepRef = useRef();
+    const [eneredPass, setEnteredPass] = useState('')
+    const [repeatPas, setRepeatPass] = useState('')
     return(
         <SafeAreaView style={css.container}>
             <KeyboardAwareScrollView style={{flex: 1}}>
-                <View style={css.header}>
-                    <TouchableOpacity style={css.headeback} onPress={() => navigation.goBack()}>
-                        <Ionicons name="chevron-back-sharp" size={24} color="#fff" />
-                    </TouchableOpacity>
-                    <Text style={css.headertext}>Sign Up</Text>
-                </View>
+                <PrimaryHeader navigation={navigation}/>
                 <View style={css.wrapper}>
                     <View style={css.inputcontainer}>
                         <Text style={css.inputtext}>Name</Text>
                         <View style={css.inputwrapper}>
-                            <TextInput style={css.input} placeholder='John Doe' placeholderTextColor={'rgba(255,255,255, .5)'}/>
+                            <TextInput style={css.input} keyboardAppearance={'dark'} returnKeyType="next" onSubmitEditing={() => { mailRef.current.focus(); }} blurOnSubmit={false} placeholder='John Doe' placeholderTextColor={'rgba(255,255,255, .5)'}/>
                         </View>
                     </View>
                     <View style={css.inputcontainer}>
                         <Text style={css.inputtext}>Email</Text>
                         <View style={css.inputwrapper}>
-                            <TextInput style={css.input} placeholder='mail@example.com' placeholderTextColor={'rgba(255,255,255, .5)'}/>
+                            <TextInput style={css.input} keyboardType='email-address'  keyboardAppearance={'dark'} ref={mailRef} returnKeyType="next" onSubmitEditing={() => { passRef.current.focus(); }} blurOnSubmit={false} placeholder='mail@example.com' placeholderTextColor={'rgba(255,255,255, .5)'}/>
                         </View>
                     </View>
                     <View style={css.inputcontainer_last}>
                         <Text style={css.inputtext}>Password</Text>
                         <View style={css.inputwrapper}>
-                            <TextInput style={css.input} placeholder='Pick a strong password' placeholderTextColor={'rgba(255,255,255, .5)'}/>
+                            <TextInput style={css.input} keyboardAppearance={'dark'} ref={passRef} returnKeyType="next" onSubmitEditing={() => { passrepRef.current.focus();}} value={eneredPass} onChangeText={text => setEnteredPass(text)} blurOnSubmit={false} placeholder='Pick a strong password' placeholderTextColor={'rgba(255,255,255, .5)'} secureTextEntry={true}/>
                         </View>
                     </View>
                     <View style={css.inputcontainer_last}>
-                        <Text style={css.inputtext}>Password again</Text>
-                        <View style={css.inputwrapper}>
-                            <TextInput style={css.input} placeholder='Repeat password' placeholderTextColor={'rgba(255,255,255, .5)'}/>
+                        <Text style={css.inputtext}>Repeat password</Text>
+                        <View style={ eneredPass == repeatPas ? css.inputwrapper : css.wrongrepeat}>
+                            <TextInput ref={passrepRef} keyboardAppearance={'dark'} value={repeatPas} onChangeText={text => setRepeatPass(text)} placeholder='Repeat password' placeholderTextColor={'rgba(255,255,255, .5)'} secureTextEntry={true} style={ css.input} />
+                            {eneredPass != repeatPas ? <Text style={{color: 'crimson', marginTop: 10, alignSelf: 'flex-start', marginLeft: 15}}>Password doesn't match</Text> : null}
                         </View>
                     </View>
                     <PrimaryButton caption={'Create Account'}/>
@@ -64,6 +66,8 @@ const css = StyleSheet.create({
     wrapper: {
         flex: .83,
         alignItems: 'center',
+        width: '90%',
+        alignSelf: 'center'
 
     },
 
@@ -101,13 +105,22 @@ const css = StyleSheet.create({
         fontSize: 15
     },
 
+    wrongrepeat: {
+        backgroundColor: '#1a1a1a',
+        borderColor: 'crimson',
+        borderWidth: 1,
+        height: 58,
+        borderRadius: 10,
+        alignItems: 'center'
+    },
+
     inputcontainer: {
-        width: '90%',
+        width: '100%',
         marginBottom: 25
     },
 
     inputcontainer_last: {
-        width: '90%',
+        width: '100%',
         marginBottom: 35
     },
 

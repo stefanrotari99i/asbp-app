@@ -1,20 +1,18 @@
 import { SafeAreaView, TextInput, View, Text, StyleSheet, TouchableOpacity} from "react-native"
 import {AppleButton, GoogleButton, PrimaryButton} from '../buttons/Buttons'
 import { Ionicons } from '@expo/vector-icons'; 
+import React, {useRef} from 'react'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-
+import { PrimaryHeader } from "../Headers";
 
 
 export const LoginPage = ({navigation}) => {
+    const passRef = useRef();
+
     return(
         <SafeAreaView style={css.container}>
             <KeyboardAwareScrollView style={{flex: 1}}>
-                <View style={css.header}>
-                    <TouchableOpacity style={css.headeback} onPress={() => navigation.goBack()}>
-                        <Ionicons name="chevron-back-sharp" size={24} color="#fff" />
-                    </TouchableOpacity>
-                    <Text style={css.headertext}>Log In</Text>
-                </View>
+                <PrimaryHeader  navigation={navigation}/>
                 <View style={css.wrapper}>
                     <AppleButton caption={'Continue with Apple'}/>
                     <GoogleButton caption={'Continue with Google'} />
@@ -26,16 +24,27 @@ export const LoginPage = ({navigation}) => {
                     <View style={css.inputcontainer}>
                         <Text style={css.inputtext}>Email</Text>
                         <View style={css.inputwrapper} >
-                            <TextInput style={css.input} placeholder='mail@example.com' placeholderTextColor={'rgba(255,255,255, .5)'}/>
+                            <TextInput
+                            style={css.input}
+                            keyboardType='email-address'
+                            placeholder='mail@example.com'
+                            placeholderTextColor={'rgba(255,255,255, .5)'}
+                            returnKeyType="next"
+                            keyboardAppearance={'dark'}
+                            onSubmitEditing={() => {
+                              passRef.current.focus();
+                            }}
+                            blurOnSubmit={false}
+                            />
                         </View>
                     </View>
                     <View style={css.inputcontainer_last}>
                         <Text style={css.inputtext}>Password</Text>
                         <View style={css.inputwrapper}>
-                            <TextInput style={css.input}  placeholder='************' placeholderTextColor={'rgba(255,255,255, .5)'} secureTextEntry={true}/>
+                            <TextInput style={css.input} ref={passRef}  keyboardAppearance={'dark'} placeholder='************' placeholderTextColor={'rgba(255,255,255, .5)'} secureTextEntry={true}/>
                         </View>
                     </View>
-                    <PrimaryButton caption={'Log In'}/>
+                    <PrimaryButton caption={'Log In'} action={() => navigation.navigate('CreateEvent')}/>
                     <View style={css.infocontainer}>
                         <Text style={css.infotext}>Don't have an account?</Text>
                         <TouchableOpacity onPress={() => navigation.navigate('Register')}>
@@ -54,13 +63,15 @@ const css = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#121212',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
 
     },
     
     wrapper: {
         flex: .85,
         alignItems: 'center',
+        width: '90%',
+        alignSelf: 'center'
 
     },
 
@@ -99,12 +110,12 @@ const css = StyleSheet.create({
     },
 
     inputcontainer: {
-        width: '90%',
+        width: '100%',
         marginBottom: 25
     },
 
     inputcontainer_last: {
-        width: '90%',
+        width: '100%',
         marginBottom: 35
     },
 
