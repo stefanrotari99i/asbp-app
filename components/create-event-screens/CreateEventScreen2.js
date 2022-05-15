@@ -24,7 +24,7 @@ export const CreateEventScreen2 = ({navigation}) => {
                         <TextInput style={css.inputicon} placeholder='Location' placeholderTextColor={'rgba(255,255,255, .5)'} keyboardAppearance={'dark'}/>
                     </View>
                     {/* Event create button */}
-                    <PrimaryButton caption={'Next step'} />
+                    <PrimaryButton caption={'Next step'} action={() => navigation.navigate('Main')}/>
                 </View>
 
             </KeyboardAwareScrollView>

@@ -41,6 +41,12 @@ export const GoogleButton = ({caption, action}) => {
     )
 }
 
+export const DetailsBtn = ({caption, action}) => (
+    <TouchableOpacity style={css.detailsbtn} onPress={action} >
+        <Text style={css.detailsbtntext}>{caption}</Text>
+    </TouchableOpacity> 
+)
+
 const css = StyleSheet.create({
     primarybtn: {
         width: '100%',
@@ -90,6 +96,13 @@ const css = StyleSheet.create({
         color: '#FFF',
         fontSize: 16,
         fontWeight: '600'
+    },
+
+    detailsbtn: {
+        backgroundColor: '#fff',
+        paddingVertical: 9,
+        paddingHorizontal: 15,
+        borderRadius: 8
     }
 
 })
