@@ -5,17 +5,21 @@ import { InfoBlock } from "../main-screen-components/MainComponents"
 import { Stories } from "../stories-component/Stories"
 import { MainHeader } from "./MainHeader"
 import React from 'react';
-
+import { useScrollToTop } from '@react-navigation/native';
 
 export const MainScreen = () => {
+
+    const ref = React.useRef(null);
+    useScrollToTop(ref);
+    
     return(
         <SafeAreaView style={css.maincontainer}>
             <MainHeader />
-            <ScrollView>
+            <ScrollView ref={ref}>
                 <Stories />
                 <InfoBlock />
-                <EventFlatList sectiontitle={'Upcoming events'}/>
-                <EventFlatListVertical sectiontitle={'Your events'}/>
+                <EventFlatList sectiontitle={'Upcoming events'} showSectionHeader={true}/>
+                <EventFlatListVertical sectiontitle={'Your events'} showSectionHeader={true}/>
             </ScrollView>
         </SafeAreaView>
     )

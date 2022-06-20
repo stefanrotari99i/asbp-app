@@ -81,17 +81,19 @@ const EmptyList = () => (
 )
 
 
-export const EventFlatList = ({sectiontitle}) => {
+export const EventFlatList = ({sectiontitle, showSectionHeader}) => {
     const renderEvent = ({item}) => <Event name={item.name} uri={item.uri} time={item.time} people={item.people}/>;
     const keyExtractor = (item) => item.id;
     return(
         <View >
+            {showSectionHeader && 
             <View style={{flexDirection: 'row', width: '90%', alignSelf: 'center', alignItems: 'center', marginVertical: 18, justifyContent: 'space-between'}}>
                 <Text style={css.sectiontitle}>{sectiontitle}</Text>
                 <TouchableOpacity>
                     <Text style={css.viewall}>See all</Text>
                 </TouchableOpacity>
-            </View>
+            </View>}
+
             {DATA.length == 0 ? <EmptyList /> : 
                 <FlatList
                 horizontal

@@ -1,13 +1,72 @@
-import { SafeAreaView, TextInput, View, Text, StyleSheet, TouchableOpacity} from "react-native"
+import { SafeAreaView, TextInput, View, Text, StyleSheet, TouchableOpacity, Vibration} from "react-native"
 import {AppleButton, GoogleButton, PrimaryButton} from '../buttons/Buttons'
 import { Ionicons } from '@expo/vector-icons'; 
 import React, {useRef} from 'react'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { PrimaryHeader } from "../Headers";
+import API  from "../API_db.js";
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+import { getAuth, signInWithEmailAndPassword , createUserWithEmailAndPassword } from "firebase/auth";
+import { useState } from "react/cjs/react.production.min";
+
+
+const firebaseConfig = {
+    apiKey: "AIzaSyAuNFZI5vXu90Ez3ZpFjW6hReE2HzdbEO8",
+    authDomain: "drink-mate.firebaseapp.com",
+    databaseURL: "https://drink-mate-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "drink-mate",
+    storageBucket: "drink-mate.appspot.com",
+    messagingSenderId: "328255996501",
+    appId: "1:328255996501:web:7b6a08eb4c1ecce4ec0adc",
+    measurementId: "G-CBD5TP42PK"
+  };
 
 
 export const LoginPage = ({navigation}) => {
+    const [error, setError] = React.useState(false);
+    const [errormsg, setMsgError] = React.useState("");
+    const [mailerror, setMailError] = React.useState(false)
     const passRef = useRef();
+    const [mail, setMail] = React.useState("");
+    const [pass, setPass] = React.useState("");
+
+    function handler(email,password, navigation){
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth();
+        signInWithEmailAndPassword(auth,email,password)
+        .then((userCredential) => {
+        // Signed in 
+        const user = userCredential.user;
+        // ...
+        console.log('ss')
+        navigation.navigate('Main')
+        navigation.reset({
+            index: 0,
+            routes: [{ name: 'Main' }],
+          });
+    
+      })
+      .catch((error) => {
+        console.log(error.message)
+        setError(true)
+        Vibration.vibrate(200, false)
+        if(error.message == 'Firebase: Error (auth/invalid-email).' && mail.length == 0 && password.length == 0)
+            setMsgError('Email and password field is required.')
+        else if(error.message == 'Firebase: Error (auth/wrong-password).')
+            setMsgError('Invalid password')
+        else if(error.message == 'Firebase: Error (auth/invalid-email).') {
+            setMailError(true)
+            setMsgError('Invalid email.')
+        }
+        else if(error.message == 'Firebase: Error (auth/user-not-found).')
+            setMsgError('User not found.')
+        else if(error.message == 'Firebase: Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later. (auth/too-many-requests).')
+            setMsgError('Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later.')
+        else 
+         setMsgError('Something went wrong. Please try again.')
+      });
+    }
 
     return(
         <SafeAreaView style={css.container}>
@@ -22,8 +81,9 @@ export const LoginPage = ({navigation}) => {
                     </View>
                     {/* <Text style={css.inavlidcredit}>Invalid credentials! Please check your email and password and try again.</Text> */}
                     <View style={css.inputcontainer}>
+                        {error == true && <Text style={{color: 'crimson', marginTop: 10, marginBottom:19, alignSelf: 'center',textAlign:'center', marginLeft: 15}}>{errormsg}</Text> }
                         <Text style={css.inputtext}>Email</Text>
-                        <View style={css.inputwrapper} >
+                        <View style={error ? css.wrong : css.inputwrapper}>
                             <TextInput
                             style={css.input}
                             keyboardType='email-address'
@@ -35,16 +95,27 @@ export const LoginPage = ({navigation}) => {
                               passRef.current.focus();
                             }}
                             blurOnSubmit={false}
+                            value={mail}
+                            onChangeText={mail => setMail(mail)}
                             />
                         </View>
                     </View>
                     <View style={css.inputcontainer_last}>
                         <Text style={css.inputtext}>Password</Text>
-                        <View style={css.inputwrapper}>
-                            <TextInput style={css.input} ref={passRef}  keyboardAppearance={'dark'} placeholder='************' placeholderTextColor={'rgba(255,255,255, .5)'} secureTextEntry={true}/>
+                        <View style={error ? css.wrong : css.inputwrapper}>
+                            <TextInput
+                             style={css.input} 
+                             ref={passRef}  
+                             keyboardAppearance={'dark'} 
+                             placeholder='************' 
+                             placeholderTextColor={'rgba(255,255,255, .5)'} 
+                             secureTextEntry={true}
+                             value={pass}
+                             onChangeText={pass => setPass(pass)}
+                             />
                         </View>
                     </View>
-                    <PrimaryButton caption={'Log In'} action={() => navigation.navigate('CreateEvent')}/>
+                    <PrimaryButton caption={'Log In'} action={() => handler(mail,pass, navigation)}/>
                     <View style={css.infocontainer}>
                         <Text style={css.infotext}>Don't have an account?</Text>
                         <TouchableOpacity onPress={() => navigation.navigate('Register')}>
@@ -182,6 +253,16 @@ const css = StyleSheet.create({
         fontWeight: '600',
         textAlign: 'center',
         marginBottom: 25,
-    }
+    },
+
+    wrong: {
+        backgroundColor: '#1a1a1a',
+        borderColor: 'crimson',
+        borderWidth: 1,
+        height: 58,
+        borderRadius: 10,
+        alignItems: 'center',
+        textAlign: 'center'
+    },
 
 })
