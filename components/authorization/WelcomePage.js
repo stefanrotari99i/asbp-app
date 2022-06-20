@@ -1,9 +1,38 @@
 import { SafeAreaView, View, StyleSheet, Text, ImageBackground} from "react-native"
 import { OutlineButton, PrimaryButton } from "../buttons/Buttons"
 import { LinearGradient } from 'expo-linear-gradient';
+import React,{useEffect} from 'react';
+import { CommonActions } from "@react-navigation/native";
+
+import { getAuth, signInWithEmailAndPassword ,onAuthStateChanged} from "firebase/auth";
+import { db, auth} from "../firebase_api/config";
+import { collection, addDoc,setDoc, doc,Timestamp } from "firebase/firestore"; 
+
+
+
 
 
 export const WelcomePage = ({navigation}) => {
+    useEffect(()=> {
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+              // User is signed in, see docs for a list of available properties
+              const uid = user.uid;
+              navigation.navigate("Main")
+              navigation.dispatch({
+                ...CommonActions.reset({
+                  index: 0,
+                  routes: [{ name: "Main" }]
+                })
+              });
+              // ...
+            } else {
+              // User is signed out
+              // ...
+            }
+          });
+        },[]);
+
     return(
         <View style={{flex: 1}}>
             <ImageBackground style={css.imageBg} resizeMode={'cover'} source={{uri: 'https://images.theconversation.com/files/427412/original/file-20211020-20-smslqk.jpg?ixlib=rb-1.1.0&q=45&auto=format&w=1200&h=1200.0&fit=crop'}} />

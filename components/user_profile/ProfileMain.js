@@ -1,12 +1,18 @@
 import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native"
 import { Ionicons } from '@expo/vector-icons'; 
-
+import { OutlineButton } from "../buttons/Buttons";
+import { SettingsItemBtn } from "../settings_screen/SettingsItemsBtns";
+import { Entypo } from '@expo/vector-icons'; 
+import { MaterialIcons } from '@expo/vector-icons';
 
 export const ProfileMain = () => {
     return(
         <View style={css.mainwrapper}>
-            <TouchableOpacity>
+            <TouchableOpacity style={css.avatarwrapp}>
                 <Image style={css.avatar} source={{uri: 'https://image.gala.de/20548298/t/r4/v20/w1440/r1/-/dwayne-johnson-cm--8524760-.jpg'}} />
+                <TouchableOpacity style={css.mystoryadd}>
+                    <Entypo name="plus" size={20} color="#fff" />
+                </TouchableOpacity>
             </TouchableOpacity>
             <Text style={css.name} >Dwayne Johnson</Text>
             <Text style={css.username}>@dwaynjohnson</Text>
@@ -24,6 +30,14 @@ export const ProfileMain = () => {
                     <Text style={css.stattext}>Following</Text>
                 </View>
             </View>
+            <View style={{width: "100%", flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',  marginVertical: 10}}>
+                <TouchableOpacity style={{backgroundColor: '#182230', width: '83%', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingVertical: 13, alignSelf: 'center', alignItems: 'center', borderRadius: 10}}>
+                    <Text style={{color: '#3a82f7', fontSize: 16, fontWeight: '600'}}>Edit profile</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={{backgroundColor: '#182230', width: '15%', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingVertical: 13, alignSelf: 'center', alignItems: 'center', borderRadius: 10}}>
+                    <Entypo name="plus" size={22} color="#3a82f7" />
+                </TouchableOpacity>
+            </View>
         </View>
     )
 }
@@ -40,6 +54,12 @@ const css = StyleSheet.create({
         width: 100,
         height: 100,
         borderRadius: 50
+    },
+
+    avatarwrapp: {
+        backgroundColor: '#182230',
+        borderRadius: 50,
+        padding: 4
     },
 
     name: {
@@ -61,9 +81,12 @@ const css = StyleSheet.create({
     statscontainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
+        backgroundColor: '#161617',
+        paddingVertical: 15,
+        paddingHorizontal: 20,
+        borderRadius: 13,
         width: '100%',
-        paddingHorizontal: 35,
-        marginTop: 30
+        marginTop: 10
     },
     
     statswrapper: {
@@ -81,5 +104,14 @@ const css = StyleSheet.create({
         color: '#fff',
         fontSize: 14,
         fontWeight: '400'
+    },
+
+    mystoryadd: {
+        backgroundColor: '#182230',
+        borderRadius: 50,
+        position: 'absolute',
+        padding: 5,
+        bottom: 0,
+        right: 0
     }
 })

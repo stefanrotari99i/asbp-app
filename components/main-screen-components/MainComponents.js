@@ -1,13 +1,13 @@
 import { TouchableOpacity, View, StyleSheet, Text, ImageBackground} from "react-native"
 import { Colors } from "react-native/Libraries/NewAppScreen"
 import { DetailsBtn } from "../buttons/Buttons"
-
+import { BlurView } from 'expo-blur';
 
 export const InfoBlock = () => {
     return(
         <View style={css.infowrapp}>
-            <ImageBackground source={{uri: 'https://www.pngmart.com/files/21/Crowd-Silhoutte-PNG-Isolated-Free-Download.png'}} style={css.bgimage} resizeMode={'cover'}/>
-            <Text style={css.infotitle}>Find new friends and drinkmates!</Text>
+            <ImageBackground source={{uri: 'https://pngimg.com/uploads/party/party_PNG17.png'}} style={css.bgimage} resizeMode={'cover'}/>
+            <Text style={css.infotitle}>Find new friends and drinkmate's!</Text>
             <Text style={css.content}>
                 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's.
             </Text>
@@ -18,14 +18,15 @@ export const InfoBlock = () => {
 
 const css = StyleSheet.create({
     infowrapp: {
-        backgroundColor: '#8758f2',
+        backgroundColor: '#222226',
         width: '90%',
         alignSelf: 'center',
-        padding: 15,
+        paddingVertical: 20,
+        paddingHorizontal: 17,
         borderRadius: 15,
         alignItems: 'flex-start',
         overflow:'hidden',
-        marginVertical: 12
+        marginVertical: 15
     },
 
     infotitle: {
@@ -36,9 +37,10 @@ const css = StyleSheet.create({
 
     content: {
         color: 'rgba(255,255,255, .8)',
-        fontWeight: '500',
+        fontWeight: '400',
         fontSize: 14,
-        marginTop: 5,
+        lineHeight: 20,
+        marginTop: 10,
         marginBottom: 15
     },
 
@@ -48,6 +50,7 @@ const css = StyleSheet.create({
         position: 'absolute',
         bottom: 0,
         left: 0,
-        opacity: .7
-    }
+        opacity: .6
+    },
+
 })

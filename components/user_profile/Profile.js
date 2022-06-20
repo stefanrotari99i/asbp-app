@@ -4,18 +4,19 @@ import { ProfileMain } from "./ProfileMain"
 import {EventFlatListVertical} from '../events-component/EventFlatListVertical'
 import { useScrollToTop } from '@react-navigation/native';
 import React from 'react'
+import { DATA } from "../DataTest/DATA";
 
 
-export const Profile = () => {
+export const Profile = ({navigation}) => {
     const ref = React.useRef(null);
     useScrollToTop(ref);
 
     return(
         <SafeAreaView style={css.container}>
-            <PorfileHeader />
+            <PorfileHeader navigation={navigation}/>
             <ScrollView ref={ref}>
                 <ProfileMain />
-                <EventFlatListVertical showSectionHeader={false}/>
+                <EventFlatListVertical showSectionHeader={false} DATA={DATA}/>
             </ScrollView>
         </SafeAreaView>
     )
@@ -23,7 +24,7 @@ export const Profile = () => {
 
 const css = StyleSheet.create({
     container: {
-        backgroundColor: '#121212',
+        backgroundColor: '#000',
         flex: 1
     }
 })

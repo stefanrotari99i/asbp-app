@@ -3,16 +3,18 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import React, { useState } from 'react'
 import { PrimaryButton } from "../buttons/Buttons";
 import { PrimaryHeader } from "../Headers";
+import { CreateEventIndicator } from "./CreateEventComponents";
 
 export const CreateEventScreen2 = ({navigation}) => {
     return(
         <SafeAreaView style={css.container}>
          <KeyboardAwareScrollView style={{flex: 1}}>
-                <PrimaryHeader  navigation={navigation}/>
+                <PrimaryHeader  navigation={navigation}  caption={'Event details'}/>
+                <CreateEventIndicator screen={2}/>
                 <View style={{width: '90%', alignItems: 'center', alignSelf: 'center'}}>
 
                     {/* Section Title*/}
-                    <Text style={css.sectiontitle}>Event details</Text>
+                    {/* <Text style={css.sectiontitle}>Event details</Text> */}
 
                     {/* Event Name */}
                     <View style={css.inputwrapper}>
@@ -24,7 +26,7 @@ export const CreateEventScreen2 = ({navigation}) => {
                         <TextInput style={css.inputicon} placeholder='Location' placeholderTextColor={'rgba(255,255,255, .5)'} keyboardAppearance={'dark'}/>
                     </View>
                     {/* Event create button */}
-                    <PrimaryButton caption={'Next step'} action={() => navigation.navigate('Main')}/>
+                    <PrimaryButton caption={'Next step'} action={() => navigation.navigate('CreateEventDrink')}/>
                 </View>
 
             </KeyboardAwareScrollView>
@@ -36,7 +38,7 @@ const css = StyleSheet.create({
 
     container: {
         flex: 1,
-        backgroundColor: '#121212',
+        backgroundColor: '#000',
     },
 
     input: {

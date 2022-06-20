@@ -1,12 +1,13 @@
 import { TouchableOpacity, StyleSheet, Text } from "react-native"
 import { AntDesign } from '@expo/vector-icons'; 
 import { LinearGradient } from 'expo-linear-gradient';
+import { MaterialIcons } from '@expo/vector-icons'; 
 
 export const PrimaryButton = ({caption, action}) => {
     return(
         <TouchableOpacity style={css.primarybtn} onPress={action} >
             <LinearGradient
-                colors={['#FFC300', '#FEB241']}
+                colors={['#2663c7', '#2663c7']}
                 style={css.gradient}
             >
                 <Text style={css.btntext}>{caption}</Text>
@@ -43,6 +44,7 @@ export const GoogleButton = ({caption, action}) => {
 
 export const DetailsBtn = ({caption, action}) => (
     <TouchableOpacity style={css.detailsbtn} onPress={action} >
+        <MaterialIcons name="add" size={24} color="#3a82f7" />
         <Text style={css.detailsbtntext}>{caption}</Text>
     </TouchableOpacity> 
 )
@@ -60,7 +62,7 @@ const css = StyleSheet.create({
     },
 
     btntext: {
-        color: '#000',
+        color: '#fff',
         fontSize: 16,
         fontWeight: '600'
     },
@@ -99,10 +101,18 @@ const css = StyleSheet.create({
     },
 
     detailsbtn: {
-        backgroundColor: '#fff',
-        paddingVertical: 9,
-        paddingHorizontal: 15,
-        borderRadius: 8
+        backgroundColor: '#182230',
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        borderRadius: 13,
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    detailsbtntext: {
+        color: '#3a82f7',
+        fontSize: 15,
+        fontWeight: '600',
+        marginLeft: 7
     }
 
 })

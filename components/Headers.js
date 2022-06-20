@@ -1,13 +1,13 @@
 import { StyleSheet, View, Text, TouchableOpacity} from "react-native"
 import { Ionicons } from '@expo/vector-icons'; 
 
-export const PrimaryHeader = ({navigation}) => {
+export const PrimaryHeader = ({navigation, caption}) => {
     return(
         <View style={css.header}>
             <TouchableOpacity style={css.headeback} onPress={() => navigation.goBack()}>
                 <Ionicons name="chevron-back-sharp" size={24} color="#fff" />
             </TouchableOpacity>
-            <Text style={css.headertext}>Create Event</Text>
+            <Text style={css.headertext}>{caption}</Text>
         </View>
     )
 }
@@ -18,8 +18,7 @@ const css = StyleSheet.create({
         alignSelf: 'center',
         flexDirection: 'row',
         alignItems: 'center',
-        flex: .1,
-        marginBottom: 40,
+        marginBottom: 20,
         marginTop: 20
     },
 

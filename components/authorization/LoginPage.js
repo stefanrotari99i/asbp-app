@@ -1,132 +1,155 @@
 import { SafeAreaView, TextInput, View, Text, StyleSheet, TouchableOpacity, Vibration} from "react-native"
 import {AppleButton, GoogleButton, PrimaryButton} from '../buttons/Buttons'
 import { Ionicons } from '@expo/vector-icons'; 
-import React, {useRef} from 'react'
+import React, {useRef, createRef} from 'react'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { PrimaryHeader } from "../Headers";
-import API  from "../API_db.js";
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import { getAuth, signInWithEmailAndPassword , createUserWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react/cjs/react.production.min";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { db, auth} from "../firebase_api/config";
+import { collection, addDoc,setDoc, doc,Timestamp } from "firebase/firestore"; 
+import EmailValidator from 'aj-email-validator'
+import { CommonActions } from "@react-navigation/native";
 
 
-const firebaseConfig = {
-    apiKey: "AIzaSyAuNFZI5vXu90Ez3ZpFjW6hReE2HzdbEO8",
-    authDomain: "drink-mate.firebaseapp.com",
-    databaseURL: "https://drink-mate-default-rtdb.europe-west1.firebasedatabase.app",
-    projectId: "drink-mate",
-    storageBucket: "drink-mate.appspot.com",
-    messagingSenderId: "328255996501",
-    appId: "1:328255996501:web:7b6a08eb4c1ecce4ec0adc",
-    measurementId: "G-CBD5TP42PK"
-  };
-
-
-export const LoginPage = ({navigation}) => {
-    const [error, setError] = React.useState(false);
-    const [errormsg, setMsgError] = React.useState("");
-    const [mailerror, setMailError] = React.useState(false)
-    const passRef = useRef();
-    const [mail, setMail] = React.useState("");
-    const [pass, setPass] = React.useState("");
-
-    function handler(email,password, navigation){
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth();
-        signInWithEmailAndPassword(auth,email,password)
-        .then((userCredential) => {
-        // Signed in 
-        const user = userCredential.user;
-        // ...
-        console.log('ss')
-        navigation.navigate('Main')
-        navigation.reset({
-            index: 0,
-            routes: [{ name: 'Main' }],
-          });
-    
-      })
-      .catch((error) => {
-        console.log(error.message)
-        setError(true)
-        Vibration.vibrate(200, false)
-        if(error.message == 'Firebase: Error (auth/invalid-email).' && mail.length == 0 && password.length == 0)
-            setMsgError('Email and password field is required.')
-        else if(error.message == 'Firebase: Error (auth/wrong-password).')
-            setMsgError('Invalid password')
-        else if(error.message == 'Firebase: Error (auth/invalid-email).') {
-            setMailError(true)
-            setMsgError('Invalid email.')
+export class LoginPage extends React.Component {
+    constructor(props){
+        super(props);
+        this.passRef = createRef();
+        this.mailRef = createRef();
+        this.state={
+            error:false,
+            errormsg:"",
+            generalError: false,
+            mailError: false,
+            passError: false,
+            email:"",
+            password:""
         }
-        else if(error.message == 'Firebase: Error (auth/user-not-found).')
-            setMsgError('User not found.')
-        else if(error.message == 'Firebase: Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later. (auth/too-many-requests).')
-            setMsgError('Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later.')
-        else 
-         setMsgError('Something went wrong. Please try again.')
-      });
     }
 
-    return(
-        <SafeAreaView style={css.container}>
-            <KeyboardAwareScrollView style={{flex: 1}}>
-                <PrimaryHeader  navigation={navigation}/>
-                <View style={css.wrapper}>
-                    <AppleButton caption={'Continue with Apple'}/>
-                    <GoogleButton caption={'Continue with Google'} />
-                    <View style={css.separator}>
-                        <View style={css.separatorline}></View>
-                        <Text style={css.separatortext}>OR</Text>
-                    </View>
-                    {/* <Text style={css.inavlidcredit}>Invalid credentials! Please check your email and password and try again.</Text> */}
-                    <View style={css.inputcontainer}>
-                        {error == true && <Text style={{color: 'crimson', marginTop: 10, marginBottom:19, alignSelf: 'center',textAlign:'center', marginLeft: 15}}>{errormsg}</Text> }
-                        <Text style={css.inputtext}>Email</Text>
-                        <View style={error ? css.wrong : css.inputwrapper}>
-                            <TextInput
-                            style={css.input}
-                            keyboardType='email-address'
-                            placeholder='mail@example.com'
-                            placeholderTextColor={'rgba(255,255,255, .5)'}
-                            returnKeyType="next"
-                            keyboardAppearance={'dark'}
-                            onSubmitEditing={() => {
-                              passRef.current.focus();
-                            }}
-                            blurOnSubmit={false}
-                            value={mail}
-                            onChangeText={mail => setMail(mail)}
-                            />
-                        </View>
-                    </View>
-                    <View style={css.inputcontainer_last}>
-                        <Text style={css.inputtext}>Password</Text>
-                        <View style={error ? css.wrong : css.inputwrapper}>
-                            <TextInput
-                             style={css.input} 
-                             ref={passRef}  
-                             keyboardAppearance={'dark'} 
-                             placeholder='************' 
-                             placeholderTextColor={'rgba(255,255,255, .5)'} 
-                             secureTextEntry={true}
-                             value={pass}
-                             onChangeText={pass => setPass(pass)}
-                             />
-                        </View>
-                    </View>
-                    <PrimaryButton caption={'Log In'} action={() => handler(mail,pass, navigation)}/>
-                    <View style={css.infocontainer}>
-                        <Text style={css.infotext}>Don't have an account?</Text>
-                        <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-                            <Text style={css.infotext_2}>Sign Up</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-            </KeyboardAwareScrollView>
-        </SafeAreaView>
+    login_callback(){
+        signInWithEmailAndPassword(auth, this.state.email, this.state.password)
+        .then((userCredential) => {
+          // Signed in 
+          const user = userCredential.user;
 
-    )
+          this.props.navigation.navigate("Main");
+          this.props.navigation.dispatch({
+            ...CommonActions.reset({
+              index: 0,
+              routes: [{ name: "Main" }]
+            })
+          });
+        })
+        .catch((error) => {
+            this.setState({error: true})
+            console.log(error.code)
+            if(this.state.email.length == 0 && this.state.password.length == 0 && error.code == 'auth/invalid-email'){
+                this.setState({errormsg: 'Email and password field must not be blank .'})
+                this.setState({generalError: true})
+                this.setState({mailError: false})
+                this.setState({passError: false})
+                this.mailRef.current.focus();
+            }
+
+            else if(error.code == 'auth/wrong-password' || error.code == 'auth/invalid-password') {
+                this.setState({errormsg: 'Wrong password.'})
+                this.setState({passError: true})
+                this.setState({generalError: false})
+                this.setState({mailError: false})
+                this.passRef.current.focus();
+            }
+
+            else if(error.code == 'auth/invalid-email') {
+                this.setState({errormsg: 'Email address does not match a valid user account.'})
+                this.setState({passError: false})
+                this.setState({generalError: false})
+                this.setState({mailError: true})
+                this.mailRef.current.focus();
+            }
+
+            else if(error.code == 'auth/too-many-requests') {
+                this.setState({errormsg: 'Too many requests, try again later.'})
+                this.setState({passError: false})
+                this.setState({generalError: true})
+                this.setState({mailError: false})
+            } else {
+                this.setState({errormsg: 'Something went wrong. Please try again.'})
+                this.setState({passError: false})
+                this.setState({generalError: true})
+                this.setState({mailError: false})
+            }
+        });
+    }
+
+    ivalidMailError(){
+        this.setState({errormsg: 'Please enter a valid email address.', mailError: true, passError: false, generalError: false, error: true});
+        this.mailRef.current.focus();
+    }
+
+    render() {
+        return(
+            <SafeAreaView style={css.container}>
+                <KeyboardAwareScrollView style={{flex: 1}}>
+                    <PrimaryHeader  navigation={this.props.navigation} caption={'Log in'}/>
+                    <View style={css.wrapper}>
+                        <AppleButton caption={'Continue with Apple'}/>
+                        <GoogleButton caption={'Continue with Google'} />
+                        <View style={css.separator}>
+                            <View style={css.separatorline}></View>
+                            <Text style={css.separatortext}>OR</Text>
+                        </View>
+                        <View style={css.inputcontainer}>
+                            {this.state.error == true && <Text style={{color: 'crimson', marginTop: 10, marginBottom:19, alignSelf: 'center',textAlign:'center', marginLeft: 15}}>{this.state.errormsg}</Text> }
+                            <Text style={css.inputtext}>Email</Text>
+                            <View style={this.state.generalError || this.state.mailError ? css.wrong: css.inputwrapper}>
+                                <TextInput
+                                style={css.input}
+                                keyboardType='email-address'
+                                placeholder='mail@example.com'
+                                placeholderTextColor={'rgba(255,255,255, .5)'}
+                                returnKeyType="next"
+                                keyboardAppearance={'dark'}
+                                ref={this.mailRef}
+                                onSubmitEditing={() => {
+                                  this.passRef.current.focus();
+                                }}
+                    
+                                blurOnSubmit={false}
+                                value={this.state.email} 
+                                onChangeText={text=>this.setState({email:text})}
+                                />
+                            </View>
+                        </View>
+                        <View style={css.inputcontainer_last}>
+                            <Text style={css.inputtext}>Password</Text>
+                            <View style={this.state.passError || this.state.generalError ? css.wrong : css.inputwrapper}>
+                                <TextInput
+                                 style={css.input} 
+                                 ref={this.passRef}  
+                                 keyboardAppearance={'dark'} 
+                                 placeholder='************' 
+                                 placeholderTextColor={'rgba(255,255,255, .5)'} 
+                                 secureTextEntry={true}
+                                 value={this.state.password} 
+                                 onChangeText={text=>this.setState({password:text})}
+                                 />
+                            </View>
+                        </View>
+                        <PrimaryButton caption={'Log In'} action={() => {EmailValidator(this.state.email) == false? this.ivalidMailError() :this.login_callback()}}/>
+                        <View style={css.infocontainer}>
+                            <Text style={css.infotext}>Don't have an account?</Text>
+                            <TouchableOpacity onPress={() => this.props.navigation.navigate('Register')}>
+                                <Text style={css.infotext_2}>Sign Up</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </KeyboardAwareScrollView>
+            </SafeAreaView>
+    
+        )
+    }
 }
 
 const css = StyleSheet.create({
@@ -256,7 +279,7 @@ const css = StyleSheet.create({
     },
 
     wrong: {
-        backgroundColor: '#1a1a1a',
+        backgroundColor: '#1c1111',
         borderColor: 'crimson',
         borderWidth: 1,
         height: 58,

@@ -6,13 +6,14 @@ import { Ionicons } from '@expo/vector-icons';
 export const MainHeader = () => {
     return(
         <View style={css.header}>
-            <Text style={css.logo}>DrinkMate</Text>
+            {/* <Text style={css.logo}>DrinkMate</Text> */}
+            <TouchableOpacity style={css.changelocation}>
+                <Ionicons name="ios-location-sharp" size={20} color="#fff" />
+                <Text style={css.location}>Petroșani</Text>
+            </TouchableOpacity>
             <View style={css.headerwrapp}>
                 <TouchableOpacity style={css.notification}>
                     <Ionicons name="notifications" size={26} color="#fff" />
-                </TouchableOpacity>
-                <TouchableOpacity>
-                    <Ionicons name="md-chatbubble-ellipses" size={26} color="#fff" />
                 </TouchableOpacity>
             </View>
         </View>
@@ -25,7 +26,8 @@ const css = StyleSheet.create({
         alignSelf: 'center',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginVertical: 15
+        alignItems: 'center',
+        marginVertical: 15,
     },
 
     logo: {
@@ -38,7 +40,15 @@ const css = StyleSheet.create({
         flexDirection: 'row'
     },
 
-    notification: {
-        marginRight: 22
+    location: {
+        color: '#fff',
+        fontSize: 16,
+        fontWeight: '700',
+        marginLeft: 7
+    },
+
+    changelocation: {
+        flexDirection: 'row',
+        alignItems: 'center',
     }
 })

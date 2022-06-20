@@ -1,34 +1,34 @@
-import { SafeAreaView, StyleSheet, ScrollView } from "react-native"
-import { EventFlatList } from "../events-component/EventFlatList"
-import { EventFlatListVertical } from "../events-component/EventFlatListVertical"
-import { InfoBlock } from "../main-screen-components/MainComponents"
-import { Stories } from "../stories-component/Stories"
+import { SafeAreaView, StyleSheet, ScrollView, TouchableOpacity, Text, View} from "react-native"
 import { MainHeader } from "./MainHeader"
-import React from 'react';
-import { useScrollToTop } from '@react-navigation/native';
+import React, {useEffect} from 'react';
+import { useScrollToTop, CommonActions  } from '@react-navigation/native';
+import { getAuth, signInWithEmailAndPassword ,onAuthStateChanged,signOut} from "firebase/auth";
+import { db, auth} from "../firebase_api/config";
+import { collection, addDoc,setDoc, doc,Timestamp } from "firebase/firestore"; 
+import { MainContent } from "./MainScreenContent"
 
-export const MainScreen = () => {
 
+
+export const MainScreen = ({navigation}) => {
     const ref = React.useRef(null);
+
     useScrollToTop(ref);
-    
     return(
-        <SafeAreaView style={css.maincontainer}>
-            <MainHeader />
-            <ScrollView ref={ref}>
-                <Stories />
-                <InfoBlock />
-                <EventFlatList sectiontitle={'Upcoming events'} showSectionHeader={true}/>
-                <EventFlatListVertical sectiontitle={'Your events'} showSectionHeader={true}/>
-            </ScrollView>
-        </SafeAreaView>
+        <View style={css.maincontainer}>
+            <SafeAreaView>
+                <MainHeader />
+            </SafeAreaView>
+            <MainContent scrollRef={ref} navigation={navigation}/>
+        </View>
     )
+
+
 }
 
 const css = StyleSheet.create({
 
     maincontainer: {
         flex: 1,
-        backgroundColor: '#121212'
+        backgroundColor: '#000'
     }
 })

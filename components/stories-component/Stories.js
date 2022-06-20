@@ -2,7 +2,7 @@ import { View, FlatList, Image, Text, StyleSheet, TouchableOpacity } from "react
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';  
 import React, { useState } from 'react'
-import { MaterialIcons } from '@expo/vector-icons'; 
+import { Entypo } from '@expo/vector-icons';  
 
 
 
@@ -10,49 +10,74 @@ const DATA = [
     {
         id: 0,
         name: 'Stefan',
-        uri: 'https://internationaljournalofresearch.files.wordpress.com/2019/11/www.usnews.com_.jpg',
+        uri: 'https://i.pravatar.cc/300',
     },
 
     {
         id: 1,
         name: 'David Rotari',
-        uri: 'https://images.pexels.com/photos/919734/pexels-photo-919734.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+        uri: 'https://i.pravatar.cc/300',
     },
 
     {
         id: 3,
         name: 'John Smith',
-        uri: 'https://apollo-aachen.de/wp-content/uploads/2019/08/party-1170x550.jpg',
+        uri: 'https://i.pravatar.cc/300',
     },
 
     {
         id: 4,
         name: 'Adam Sandler',
-        uri: 'https://internationaljournalofresearch.files.wordpress.com/2019/11/www.usnews.com_.jpg',
+        uri: 'https://i.pravatar.cc/300',
     },
 
     {
         id: 5,
         name: 'Chirs Meet',
-        uri: 'https://images.pexels.com/photos/919734/pexels-photo-919734.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+        uri: 'https://i.pravatar.cc/300',
     },
 
     {
         id: 6,
         name: 'Wanda Maximof',
-        uri: 'https://apollo-aachen.de/wp-content/uploads/2019/08/party-1170x550.jpg',
-    }
+        uri: 'https://i.pravatar.cc/300',
+    },
+
+    {
+        id: 7,
+        name: 'John Smith',
+        uri: 'https://i.pravatar.cc/300',
+    },
+
+    {
+        id: 8,
+        name: 'Adam Sandler',
+        uri: 'https://i.pravatar.cc/300',
+    },
+
+    {
+        id: 9,
+        name: 'Chirs Meet',
+        uri: 'https://i.pravatar.cc/300',
+    },
+
+    {
+        id: 10,
+        name: 'Wanda Maximof',
+        uri: 'https://i.pravatar.cc/300',
+    },
+    
 ]
 
 
 // Event Item
-const Event = ({name, uri}) => {
+const Event = ({name, uri, id, lastitem, navigation}) => {
     const [addto, setAddTo] = useState(true)
 
     return(
-        <TouchableOpacity style={css.storyitem}>
+        <TouchableOpacity style={lastitem == id ? css.laststoryitem : css.storyitem} onPress={() => navigation.push('StoriesOpen') }>
             <LinearGradient 
-                colors={['#624098', '#a06af6']}
+                colors={['#8E2DE2', '#3a82f7']}
                 style={css.gradient}
             >
                 <Image source={{uri: uri}} style={css.storyimg} resizeMode={'cover'}/>
@@ -63,21 +88,22 @@ const Event = ({name, uri}) => {
 
 const MyStory =()=> (
     <TouchableOpacity style={css.my_storyitem}>
-        <Image source={{uri: 'https://t4.ftcdn.net/jpg/03/64/21/11/360_F_364211147_1qgLVxv1Tcq0Ohz3FawUfrtONzz8nq3e.jpg'}} style={css.my_storyimg} resizeMode={'cover'}/>
+        <Image source={{uri: 'https://i.pravatar.cc/300'}} style={css.my_storyimg} resizeMode={'cover'}/>
         <Text style={css.my_storyname}>You</Text>
         <TouchableOpacity style={css.mystoryadd}>
-            <MaterialIcons name="add" size={20} color="#fff" />
+            <Entypo name="plus" size={18} color="#fff" />
         </TouchableOpacity>
     </TouchableOpacity>
 )
 
 
 
-export const Stories = () => {
-    const renderEvent = ({item}) => <Event name={item.name} uri={item.uri}/>;
+export const Stories = ({navigation}) => {
+    let lastitem = DATA[DATA.length - 1].id
+    const renderEvent = ({item}) => <Event name={item.name} uri={item.uri} id={item.id} lastitem={lastitem} navigation={navigation}/>;
     const keyExtractor = (item) => item.id;
     return(
-        <View style={{marginVertical: 15}}>
+        <View style={{marginTop: 15, marginBottom: 3,}}>
             <FlatList
                 horizontal
                 data={DATA}
@@ -86,6 +112,9 @@ export const Stories = () => {
                 showsHorizontalScrollIndicator={false}
                 ListHeaderComponent={MyStory}
             />
+            <View style={css.separator}>
+
+            </View>
       </View>
     )
 }
@@ -96,6 +125,20 @@ const css = StyleSheet.create({
         marginHorizontal: 7,
     },
 
+    laststoryitem: {
+        alignItems: 'center',
+        marginLeft: 7,
+        marginRight: 20,
+    },
+
+    separator: {
+        height: 1,
+        backgroundColor: 'rgba(255,255,255, .1)',
+        marginTop: 15,
+        marginBottom: 2,
+    },
+    
+
     my_storyitem: {
         alignItems: 'center',
         marginLeft: 20,
@@ -104,18 +147,18 @@ const css = StyleSheet.create({
     },
 
    storyimg: {
-       width: 70,
-       height: 70,
-       borderRadius: 50,
+       width: 75,
+       height: 95,
+       borderRadius: 10,
        borderColor:'#121212',
        borderWidth: 3.5
    },
 
    my_storyimg: {
-        width: 73.5,
-        height: 73.5,
-        borderRadius: 50,
-        borderColor:'#121212',
+        width: 78.5,
+        height: 98.5,
+        borderRadius: 10,
+        borderColor:'#222226',
         borderWidth: 5
    },
 
@@ -133,20 +176,22 @@ const css = StyleSheet.create({
    },
 
    gradient: {
-       width: 74,
-       height: 74,
-       borderRadius: 50,
+       width: 79,
+       height: 99,
+       borderRadius: 10,
        alignItems: 'center',
        justifyContent: 'center'
    },
 
    mystoryadd: {
        position: 'absolute',
-       right: 2,
-       bottom: 29,
-       backgroundColor: '#624098',
+       right: -5,
+       bottom: 20,
+       backgroundColor: '#3a82f7',
        borderRadius: 50,
-       padding: 1
+       padding: 1,
+       borderWidth: 2.5,
+       borderColor: '#275fba'
 
    }
 })

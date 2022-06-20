@@ -3,12 +3,12 @@ import { Ionicons } from '@expo/vector-icons';
 
 
 
-export const PorfileHeader = () => {
+export const PorfileHeader = ({navigation}) => {
     return(
         <View style={css.header}>
             <Text style={css.username}>@stefanrotari</Text>
-            <TouchableOpacity>
-                <Ionicons name="settings-outline" size={24} color="#fff" />
+            <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
+                <Ionicons name="settings-outline" size={28} color="#fff" />
             </TouchableOpacity>
         </View>
     )
@@ -24,7 +24,7 @@ const css = StyleSheet.create({
     },
 
     username: {
-        fontSize: 20,
+        fontSize: 24,
         color: '#fff',
         fontWeight: '700'
     }

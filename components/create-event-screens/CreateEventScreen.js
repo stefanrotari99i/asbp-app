@@ -9,6 +9,7 @@ import { handleTime } from "../TextFormat";
 import { PrimaryButton } from "../buttons/Buttons";
 import * as ImagePicker from 'expo-image-picker';
 import { PrimaryHeader } from "../Headers";
+import { CreateEventIndicator } from "./CreateEventComponents";
 
 
 export const CreateEvent = ({navigation}) => {
@@ -54,10 +55,13 @@ export const CreateEvent = ({navigation}) => {
     };
 
     return(
-        <SafeAreaView style={css.container}>
-         <KeyboardAwareScrollView style={{flex: 1}}>
-                <PrimaryHeader  navigation={navigation}/>
-                <View style={{width: '90%', alignItems: 'center', alignSelf: 'center'}}>
+        <View style={css.container}>
+            <SafeAreaView>
+                <PrimaryHeader  navigation={navigation} caption={'Create event'}/>
+                <CreateEventIndicator screen={1}/>
+            </SafeAreaView>
+            <KeyboardAwareScrollView style={{flex: 1}}>
+                <View style={{width: '93%', alignItems: 'center', alignSelf: 'center', marginBottom: 15}}>
 
                     {/* Event Image Pciker */}
                     <TouchableOpacity style={css.imginput} onPress={pickImage}>
@@ -67,11 +71,11 @@ export const CreateEvent = ({navigation}) => {
                         </View>
                         {image && <Image style={css.uploadimg} source={{ uri: image }} resizeMode={'cover'} /> }
                     </TouchableOpacity>
-
-                    {/* Section Title*/}
-                    <Text style={css.sectiontitle}>Event details</Text>
-
                     {/* Event Name */}
+                    <View style={css.inputwrapper}>
+                        <TextInput style={css.input} placeholder='Event name' placeholderTextColor={'rgba(255,255,255, .5)'} keyboardAppearance={'dark'}/>
+                    </View>
+
                     <View style={css.inputwrapper}>
                         <TextInput style={css.input} placeholder='Event name' placeholderTextColor={'rgba(255,255,255, .5)'} keyboardAppearance={'dark'}/>
                     </View>
@@ -80,11 +84,11 @@ export const CreateEvent = ({navigation}) => {
                     <View style={css.timesetwrapper}>
                         <TouchableOpacity style={css.inputwrapper_half} onPress={showDatepicker}>
                             <Text style={css.timesettext}>{date.toLocaleDateString('ro-RO')}</Text>
-                            <Feather name="calendar" size={24} color="rgba(255,255,255, .5)" />
+                            <Feather name="calendar" size={24} color="rgba(255,255,255, .8)" />
                         </TouchableOpacity>
                         <TouchableOpacity style={css.inputwrapper_half} onPress={showTimepicker}>
                             <Text style={css.timesettext}>{handleTime(date)}</Text>
-                            <Feather name="clock" size={24} color="rgba(255,255,255, .5)" />
+                            <Feather name="clock" size={24} color="rgba(255,255,255, .8)" />
                         </TouchableOpacity>
                     </View>
 
@@ -96,7 +100,7 @@ export const CreateEvent = ({navigation}) => {
                     {/* Event Loaction */}
                     <View style={css.iconinput}>
                         <TextInput style={css.input} placeholder='Location' placeholderTextColor={'rgba(255,255,255, .5)'} keyboardAppearance={'dark'}/>
-                        <Ionicons name="ios-location-outline" size={24} color="rgba(255,255,255, .5)" />
+                        <Ionicons name="ios-location-outline" size={24} color="rgba(255,255,255, .8)" />
                     </View>
 
                     {/* Event create button */}
@@ -125,7 +129,7 @@ export const CreateEvent = ({navigation}) => {
                         />
                     </View>
                 )}
-        </SafeAreaView>
+        </View>
     )
 }
 
@@ -133,11 +137,11 @@ const css = StyleSheet.create({
 
     container: {
         flex: 1,
-        backgroundColor: '#121212',
+        backgroundColor: '#000',
     },
 
     input: {
-        width: '85%',
+        width: '89%',
         height: '100%',
         color: '#fff',
         fontWeight: '500',
@@ -145,15 +149,14 @@ const css = StyleSheet.create({
     },
 
     imginput: {
-        backgroundColor: '#1a1a1a',
-        borderColor: '#2e2e2e',
+        backgroundColor: '#161617',
         borderWidth: 1,
         height: 200,
         borderRadius: 10,
         alignItems: 'center',
         justifyContent: 'center',
         width: '100%',
-        marginBottom: 25
+        marginBottom: 20
     },
     
     imginputtext: {
@@ -164,25 +167,23 @@ const css = StyleSheet.create({
 
 
     inputwrapper: {
-        backgroundColor: '#1a1a1a',
-        borderColor: '#2e2e2e',
+        backgroundColor: '#161617',
         borderWidth: 1,
-        height: 58,
+        height: 62,
         borderRadius: 10,
         alignItems: 'center',
         width: '100%',
-        marginBottom: 25
+        marginBottom: 15
     },
 
     inputtextareawrapper: {
-        backgroundColor: '#1a1a1a',
-        borderColor: '#2e2e2e',
+        backgroundColor: '#161617',
         borderWidth: 1,
         height: 120,
         borderRadius: 10,
         alignItems: 'center',
         width: '100%',
-        marginBottom: 25,
+        marginBottom: 15,
         paddingVertical: 12
     },
 
@@ -194,14 +195,13 @@ const css = StyleSheet.create({
     },
 
     iconinput: {
-        backgroundColor: '#1a1a1a',
-        borderColor: '#2e2e2e',
+        backgroundColor: '#161617',
         borderWidth: 1,
-        height: 58,
+        height: 62,
         borderRadius: 10,
         alignItems: 'center',
         width: '100%',
-        marginBottom: 25,
+        marginBottom: 30,
         flexDirection: 'row',
         alignItems: 'center',
         paddingHorizontal: 20,
@@ -209,16 +209,15 @@ const css = StyleSheet.create({
     },
 
     inputwrapper_half: {
-        backgroundColor: '#1a1a1a',
-        borderColor: '#2e2e2e',
+        backgroundColor: '#161617',
         borderWidth: 1,
-        height: 58,
+        height: 62,
         borderRadius: 10,
         flexDirection: 'row',
         alignItems: 'center',
         paddingHorizontal: 20,
-        width: '47%',
-        marginBottom: 25,
+        width: '48%',
+        marginBottom: 15,
         justifyContent: 'space-between'
     },
 
